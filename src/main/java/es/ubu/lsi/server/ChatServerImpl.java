@@ -29,6 +29,7 @@ public class ChatServerImpl implements ChatServer {
 	
 	/** Client list. */
 	private List<ServerThreadForClient> clients;
+
 	
 	/** Util class to display time. */
 	private static SimpleDateFormat sdf;
@@ -41,6 +42,9 @@ public class ChatServerImpl implements ChatServer {
 	
 	/** Server socket. */
 	private ServerSocket serverSocket;
+
+	/** Banned users list. */
+	private int[] blacklist = {50001,50002};
 	
 	static {
 		 sdf = new SimpleDateFormat("HH:mm:ss"); // to display hh:mm:ss
@@ -74,6 +78,16 @@ public class ChatServerImpl implements ChatServer {
 				show("Server waiting for Clients on port " + port + ".");
 
 				Socket socket = serverSocket.accept(); // accept connection
+
+				int clientPort = socket.getPort();
+
+				// Checks if the port is on the blacklist and rejects the connection on that case
+				if(isBlacklisted(clientPort)) {
+					show("Connection rejected from port " + clientPort);
+					socket.close();
+					continue;
+				}
+
 				// if I was asked to stop
 				if (!alive)
 					break;
@@ -90,6 +104,19 @@ public class ChatServerImpl implements ChatServer {
 					+ " ServerSocket: " + e + "\n";
 			show(msg);
 		}
+	}
+
+	/**
+	 * Checks if a port is on the blacklist.
+	 * @param port port
+	 */
+	private boolean isBlacklisted(int port) {
+		for (int bannedPort : blacklist) {
+			if (bannedPort == port) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -114,7 +141,6 @@ public class ChatServerImpl implements ChatServer {
 			show("Exception closing the server and clients: " + e);
 		}
 	}
-	
 
 	/**
 	 * Shows an event (not a message) to the console.
@@ -224,9 +250,6 @@ public class ChatServerImpl implements ChatServer {
 		/** Username. */
 		private String username;
 
-		/** Boolean to indicate if a user is banned.*/
-		private boolean banned = false;
-
 		/**
 		 * Constructor. 
 		 * 
@@ -246,6 +269,7 @@ public class ChatServerImpl implements ChatServer {
 				sInput = new ObjectInputStream(socket.getInputStream());
 				// read the username
 				username = (String) sInput.readObject();
+
 				sOutput.writeInt(id);
 				sOutput.flush();
 				show(username + " just connected.");	
@@ -269,6 +293,8 @@ public class ChatServerImpl implements ChatServer {
 			// to loop until LOGOUT
 			boolean runningThread = true;
 			ChatMessage chatMessage = null;
+			ChatMessage notify = null;
+			String targetUser = null;
 			while (runningThread) {
 				// read a String (which is an object)
 				try {
@@ -292,11 +318,7 @@ public class ChatServerImpl implements ChatServer {
 
 						chatMessage.setMessage(username + ": " + chatMessage.getMessage());
 
-						if (!banned) {
-							broadcast(chatMessage);
-						} else {
-							sendMessage(chatMessage);
-						}
+						broadcast(chatMessage);
 
 						break;
 					case LOGOUT:
@@ -304,10 +326,6 @@ public class ChatServerImpl implements ChatServer {
 						chatMessage.setMessage(username + " leaving chat room!");
 						broadcast(chatMessage);
 						runningThread = false;
-						break;
-					case BAN:
-						banned = true;
-						show(username + " has been banned.");
 						break;
 				} // switch
 			}

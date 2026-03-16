@@ -37,6 +37,9 @@ public class ChatClientImpl implements ChatClient {
 	/** Id. */
 	private int id;
 
+	/** Banned users list */
+	private Set<String> bannedUsers = new HashSet<>();
+
 	/**
 	 * Constructor.
 	 * 
@@ -225,12 +228,18 @@ public class ChatClientImpl implements ChatClient {
 							MessageType.SHUTDOWN.toString()));
 					// break to do the disconnect
 					break;
-				} else if (userMsg.equalsIgnoreCase(MessageType.BAN.toString())) {
-					client.sendMessage(new ChatMessage(clientChat.id, MessageType.BAN,
-							MessageType.BAN.toString()));
-					// break to do the disconnect
-					break;
-				
+				} else if (userMsg.toLowerCase().startsWith("ban ")) {
+					String targetUser = userMsg.substring(4).trim();
+					clientChat.bannedUsers.add(targetUser);
+					client.sendMessage(new ChatMessage(clientChat.id, MessageType.BAN, targetUser));
+					System.out.println(targetUser + " has been banned locally.");
+					continue;
+				}else if (userMsg.toLowerCase().startsWith("unban ")) {
+					String targetUser = userMsg.substring(6).trim();
+					clientChat.bannedUsers.remove(targetUser);
+					client.sendMessage(new ChatMessage(clientChat.id, MessageType.BAN, targetUser));
+					System.out.println(targetUser + " has been unbanned.");
+					continue;
 				} else { // default to ordinary message
 					client.sendMessage(new ChatMessage(clientChat.id, MessageType.MESSAGE, userMsg));
 				}
@@ -254,10 +263,26 @@ public class ChatClientImpl implements ChatClient {
 			while (true) {
 				try {
 					ChatMessage msg = (ChatMessage) sInput.readObject();
+
 					if (msg.getId() != id) {
 						// if console mode print the message and add back the prompt
-						System.out.println(msg.getMessage());
-						System.out.print("\n> ");
+						String text = msg.getMessage();
+
+						String sender = "";
+						String[] parts = text.split(" ", 2);
+
+						if(parts.length > 1){
+
+							String rest = parts[1];
+
+							sender = rest.split(":")[0].trim();
+						}
+
+						if (!bannedUsers.contains(sender)) {
+
+							System.out.println(text);
+							System.out.print("\n> ");
+						}
 					}
 						
 				} catch (IOException e) {

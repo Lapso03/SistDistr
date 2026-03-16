@@ -29,7 +29,9 @@ public class ChatMessage implements Serializable {
 		/** Logout client. */
 		LOGOUT,
 		/** Ban message*/
-		BAN;
+		BAN,
+		/** Unban message*/
+		UNBAN;
 	}
 	
 	/** Type. */
