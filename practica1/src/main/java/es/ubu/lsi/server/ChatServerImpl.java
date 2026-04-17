@@ -44,7 +44,7 @@ public class ChatServerImpl implements ChatServer {
 	private ServerSocket serverSocket;
 
 	/** Banned users list. */
-	private int[] blacklist = {50001,50002};
+//	private int[] blacklist = {50001,50002};
 	
 	static {
 		 sdf = new SimpleDateFormat("HH:mm:ss"); // to display hh:mm:ss
@@ -82,11 +82,11 @@ public class ChatServerImpl implements ChatServer {
 				int clientPort = socket.getPort();
 
 				// Checks if the port is on the blacklist and rejects the connection on that case
-				if(isBlacklisted(clientPort)) {
-					show("Connection rejected from port " + clientPort);
-					socket.close();
-					continue;
-				}
+//				if(isBlacklisted(clientPort)) {
+//					show("Connection rejected from port " + clientPort);
+//					socket.close();
+//					continue;
+//				}
 
 				// if I was asked to stop
 				if (!alive)
@@ -110,14 +110,14 @@ public class ChatServerImpl implements ChatServer {
 	 * Checks if a port is on the blacklist.
 	 * @param port port
 	 */
-	private boolean isBlacklisted(int port) {
-		for (int bannedPort : blacklist) {
-			if (bannedPort == port) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private boolean isBlacklisted(int port) {
+//		for (int bannedPort : blacklist) {
+//			if (bannedPort == port) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	/**
 	 * Closes server.

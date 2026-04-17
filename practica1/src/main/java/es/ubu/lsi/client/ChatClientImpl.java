@@ -237,7 +237,7 @@ public class ChatClientImpl implements ChatClient {
 				}else if (userMsg.toLowerCase().startsWith("unban ")) {
 					String targetUser = userMsg.substring(6).trim();
 					clientChat.bannedUsers.remove(targetUser);
-					client.sendMessage(new ChatMessage(clientChat.id, MessageType.BAN, targetUser));
+					client.sendMessage(new ChatMessage(clientChat.id, MessageType.UNBAN, targetUser));
 					System.out.println(targetUser + " has been unbanned.");
 					continue;
 				} else { // default to ordinary message
