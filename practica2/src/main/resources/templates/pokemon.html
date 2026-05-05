@@ -1,10 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Buscar Pokémon</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous"
+  >
 </head>
-<body>
-$END$
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark px-4">
+  <a class="navbar-brand fw-bold" href="/">⚡ PokéApp</a>
+  <a href="/logout" class="btn btn-danger btn-sm">Salir</a>
+</nav>
+
+<div class="container mt-5" style="max-width: 700px">
+  <h2 class="fw-bold mb-4">🔍 Buscar Pokémon</h2>
+
+  <form action="/pokemon/buscar" method="get" class="d-flex gap-2 mb-4">
+    <input type="text" class="form-control form-control-lg"
+           name="nombre" placeholder="Ej: pikachu, mewtwo, bulbasaur..." required>
+    <button type="submit" class="btn btn-primary btn-lg px-4">Buscar</button>
+  </form>
+
+  <!-- Error -->
+  <div th:if="${resultado != null and resultado['estado'] == 'error'}"
+       class="alert alert-danger">
+    <strong>⚠️ Error:</strong> <span th:text="${resultado['mensaje']}"></span>
+  </div>
+
+  <!-- Tarjeta Pokémon -->
+  <div th:if="${resultado != null and resultado['estado'] == 'ok'}"
+       class="card shadow">
+    <div class="card-body">
+
+      <!-- Cabecera con imagen oficial y nombre -->
+      <div class="text-center mb-3">
+        <img th:src="${resultado['imagen_oficial']}"
+             style="max-height: 200px" class="mb-2">
+        <h2 class="text-capitalize fw-bold" th:text="${resultado['nombre']}"></h2>
+        <span class="badge bg-secondary fs-6" th:text="'#' + ${resultado['id']}"></span>
+      </div>
+
+      <!-- Sprites normal y shiny -->
+      <div class="d-flex justify-content-center gap-4 mb-3">
+        <div class="text-center">
+          <img th:src="${resultado['imagen']}" width="80" alt="Imagen Pokemon buscado normal">
+          <div class="small text-muted">Normal</div>
+        </div>
+        <div class="text-center">
+          <img th:src="${resultado['imagen_shiny']}" width="80" alt="Imagen Pokemon buscado Shiny">
+          <div class="small text-muted">✨ Shiny</div>
+        </div>
+        <div th:if="${resultado['imagen_gif'] != null}" class="text-center">
+          <img th:src="${resultado['imagen_gif']}" width="80" alt="Imagen Pokemon buscado Animado">
+          <div class="small text-muted">Animado</div>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Info básica -->
+      <div class="row text-center mb-3">
+        <div class="col">
+          <div class="text-muted small">Altura</div>
+          <div class="fw-bold" th:text="${resultado['altura']} + ' dm'"></div>
+        </div>
+        <div class="col">
+          <div class="text-muted small">Peso</div>
+          <div class="fw-bold" th:text="${resultado['peso']} + ' hg'"></div>
+        </div>
+        <div class="col">
+          <div class="text-muted small">Exp. base</div>
+          <div class="fw-bold" th:text="${resultado['experiencia_base']}"></div>
+        </div>
+        <div class="col">
+          <div class="text-muted small">Tipos</div>
+          <div class="fw-bold" th:text="${resultado['tipos']}"></div>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Stats -->
+      <h6 class="fw-bold">📊 Estadísticas base</h6>
+      <div th:each="stat : ${resultado['stats']}" class="mb-1">
+        <div class="d-flex justify-content-between small">
+          <span th:text="${stat.key}"></span>
+          <span th:text="${stat.value}"></span>
+        </div>
+        <div class="progress" style="height: 8px">
+          <div class="progress-bar bg-warning"
+               th:style="'width:' + ${stat.value} + '%'"></div>
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- Habilidades -->
+      <h6 class="fw-bold">💡 Habilidades</h6>
+      <ul class="list-unstyled">
+        <li th:each="hab : ${resultado['habilidades']}">
+          <span th:text="${hab['nombre']}" class="text-capitalize"></span>
+          <span th:if="${hab['oculta']}"
+                class="badge bg-purple ms-1"
+                style="background-color:#6f42c1">oculta</span>
+        </li>
+      </ul>
+
+      <hr>
+
+      <!-- Objetos que puede llevar -->
+      <div th:if="${!resultado['objetos'].isEmpty()}">
+        <h6 class="fw-bold">🎒 Objetos que puede llevar</h6>
+        <p th:text="${resultado['objetos']}" class="text-capitalize"></p>
+        <hr>
+      </div>
+
+      <!-- Movimientos (primeros 20) -->
+      <h6 class="fw-bold">⚔️ Movimientos (primeros 20)</h6>
+      <div class="d-flex flex-wrap gap-1">
+                <span th:each="mov : ${resultado['movimientos']}"
+                      class="badge bg-secondary text-capitalize"
+                      th:text="${mov}"></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Estado inicial -->
+  <div th:if="${resultado == null}" class="alert alert-info">
+    Escribe el nombre de un Pokémon y pulsa Buscar.
+  </div>
+</div>
 </body>
 </html>

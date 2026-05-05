@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.ApiTimeoutException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.RoleRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class Maincontroller {
+public class MainController {
 
     @Autowired private ApiService apiService;
     @Autowired private UserService userService;
@@ -32,15 +33,9 @@ public class Maincontroller {
 
     @PostMapping("/registro")
     public String registroSubmit(@RequestParam String username,
-                                 @RequestParam String password,
-                                 Model model) {
-        try {
-            userService.registrar(username, password);
-            return "redirect:/login?registrado";
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
-            return "registro";
-        }
+                                 @RequestParam String password) {
+        userService.registrar(username, password);
+        return "redirect:/login?registrado";
     }
 
     // ── Usuario logueado ──────────────────────────────────────
@@ -60,10 +55,12 @@ public class Maincontroller {
 
     @GetMapping("/pokemon/buscar")
     public String buscarPokemon(@RequestParam(required = false) String nombre, Model model) {
+
         if (nombre != null && !nombre.isBlank()) {
             Map<String, Object> resultado = apiService.getPokemonDetalle(nombre);
             model.addAttribute("resultado", resultado);
         }
+
         return "pokemon";
     }
 
@@ -78,8 +75,7 @@ public class Maincontroller {
 
     @PostMapping("/admin/rol")
     public String cambiarRol(@RequestParam Integer userId,
-                             @RequestParam String roleName,
-                             Model model) {
+                             @RequestParam String roleName) {
         userRepository.findById(userId).ifPresent(user -> {
             var rol = roleRepository.findByRoleName(roleName);
             if (rol != null) {
@@ -97,6 +93,7 @@ public class Maincontroller {
     public String testSaludo(Model model) {
         model.addAttribute("resultado", apiService.getSaludo());
         model.addAttribute("tipo", "Saludo");
+        model.addAttribute("estado", "ok");
         return "admin/test";
     }
 
@@ -104,6 +101,7 @@ public class Maincontroller {
     public String testArchivo(Model model) {
         model.addAttribute("resultado", apiService.testExcepcionArchivo());
         model.addAttribute("tipo", "Excepción de archivo");
+        model.addAttribute("estado", "ok");
         return "admin/test";
     }
 
@@ -111,6 +109,7 @@ public class Maincontroller {
     public String testBBDD(Model model) {
         model.addAttribute("resultado", apiService.testExcepcionBBDD());
         model.addAttribute("tipo", "Excepción de base de datos");
+        model.addAttribute("estado", "ok");
         return "admin/test";
     }
 
@@ -118,6 +117,34 @@ public class Maincontroller {
     public String testPokemon(Model model) {
         model.addAttribute("resultado", apiService.testExcepcionPokemon());
         model.addAttribute("tipo", "Excepción de API Pokémon");
+        model.addAttribute("estado", "ok");
         return "admin/test";
+    }
+
+    @GetMapping("/admin/test/api")
+    public String testApi() {
+        apiService.getPokemonDetalle("pikachu"); // con Flask apagado
+        return "admin/test";
+    }
+
+    @GetMapping("/admin/test/flask")
+    public String testFlask() {
+        apiService.testExcepcionPokemon();
+        return "admin/test";
+    }
+
+    @GetMapping("/admin/test/timeout")
+    public String testTimeout() {
+        throw new ApiTimeoutException();
+    }
+
+    @GetMapping("/admin/test/generico")
+    public String testGenerico() {
+        throw new RuntimeException("Error forzado");
+    }
+
+    @GetMapping("/admin/test/param")
+    public String testParam() {
+        throw new IllegalArgumentException("Parámetro inválido");
     }
 }
