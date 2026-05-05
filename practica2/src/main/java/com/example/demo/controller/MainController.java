@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.exception.ApiTimeoutException;
-import com.example.demo.exception.PokemonNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.RoleRepository;

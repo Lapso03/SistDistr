@@ -2,13 +2,10 @@ package com.example.demo.config;
 
 import com.example.demo.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.catalina.connector.Request;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
