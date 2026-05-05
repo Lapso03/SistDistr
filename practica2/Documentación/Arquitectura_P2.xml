@@ -1,0 +1,52 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Arquitectura Sistema">
+    <mxGraphModel dx="1000" dy="600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Usuario -->
+        <mxCell id="user" value=" Usuario (Browser)" style="shape=rectangle;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Spring Boot -->
+        <mxCell id="spring" value=" Spring Boot&#xa;(Frontend + Backend)&#xa;- Controllers&#xa;- Services&#xa;- Security&#xa;- ExceptionHandler" style="shape=rectangle;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="280" y="160" width="240" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Flask API -->
+        <mxCell id="flask" value=" API Flask&#xa;- Endpoints REST&#xa;- Simulación de errores&#xa;- PokeAPI" style="shape=rectangle;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="600" y="180" width="200" height="120" as="geometry"/>
+        </mxCell>
+
+        <!-- MySQL -->
+        <mxCell id="mysql" value=" MySQL DB&#xa;- Usuarios&#xa;- Roles" style="shape=cylinder;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="300" y="350" width="200" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- Flechas -->
+        <mxCell id="e1" style="endArrow=block;" edge="1" parent="1" source="user" target="spring">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e2" style="endArrow=block;" edge="1" parent="1" source="spring" target="flask">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e3" style="endArrow=block;" edge="1" parent="1" source="flask" target="spring">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e4" style="endArrow=block;" edge="1" parent="1" source="spring" target="mysql">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e5" style="endArrow=block;" edge="1" parent="1" source="mysql" target="spring">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

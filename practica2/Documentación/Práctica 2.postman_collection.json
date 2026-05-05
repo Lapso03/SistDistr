@@ -1,0 +1,283 @@
+{
+  "info": {
+    "_postman_id": "2b2d89da-b630-41ec-9c8b-f8c13d39f297",
+    "name": "Práctica 2",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53765328",
+    "_collection_link": "https://go.postman.co/collection/53765328-2b2d89da-b630-41ec-9c8b-f8c13d39f297?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "ADMIN LOGIN",
+      "protocolProfileBehavior": {
+        "strictSSL": false,
+        "followOriginalHttpMethod": false,
+        "followAuthorizationHeader": false
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "text",
+              "uuid": "e7099390-1671-4d7c-8c75-1c69fad88999"
+            },
+            {
+              "key": "password",
+              "value": "admin123",
+              "type": "text",
+              "uuid": "0325df2b-10c2-4b70-b0c4-ebd7b9da1d99"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SALUDO OK",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/admin/test/saludo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "admin",
+            "test",
+            "saludo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FLASK CAÍDO",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/admin/test/api",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "admin",
+            "test",
+            "api"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Error FLASK Interno",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/admin/test/flask",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "admin",
+            "test",
+            "flask"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "TIMEOUT API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/admin/test/timeout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "admin",
+            "test",
+            "timeout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POKEMON NO ENCONTRADO",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/admin/test/pokemon",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "admin",
+            "test",
+            "pokemon"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PARÁMETRO INVÁLIDO",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/admin/test/param",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "admin",
+            "test",
+            "param"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ERROR GENÉRICO",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/admin/test/generico",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "admin",
+            "test",
+            "generico"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "USUARIO DUPLICADO",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/registro?username=admin&password=admin123",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "registro"
+          ],
+          "query": [
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "admin123",
+              "type": "text"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POKEMON REAL",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/pokemon/buscar?nombre=pikachu",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "pokemon",
+            "buscar"
+          ],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "pikachu"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POKEMON INEXISTENTE",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/pokemon/buscar?nombre=aaaaa",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "pokemon",
+            "buscar"
+          ],
+          "query": [
+            {
+              "key": "nombre",
+              "value": "aaaaa"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
