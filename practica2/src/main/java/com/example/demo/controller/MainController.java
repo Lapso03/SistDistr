@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class Maincontroller {
+public class MainController {
 
     @Autowired private ApiService apiService;
     @Autowired private UserService userService;
