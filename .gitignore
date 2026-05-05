@@ -1,3 +1,7 @@
-target/
+
 .idea/
 *.iml
+target/
+practica1/build/
+*.class
+practica2/.env
