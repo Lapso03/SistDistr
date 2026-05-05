@@ -1,51 +1,114 @@
 package com.example.demo.config;
 
+import com.example.demo.exception.*;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.connector.Request;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Error de acceso a base de datos
+    // ── NO CRÍTICAS ───────────────────────────────────────────────────
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ModelAndView handleUsernameExists(UsernameAlreadyExistsException e,
+                                             HttpServletRequest request) {
+        return buildError("Usuario ya registrado", e.getMessage(), false, request, "/registro", "Volver al registro");
+    }
+
+    @ExceptionHandler(PokemonNotFoundException.class)
+    public ModelAndView handlePokemonNotFound(PokemonNotFoundException e,
+                                              HttpServletRequest request) {
+        return buildError("Pokémon no encontrado", e.getMessage(), false,  request,"/pokemon", "Buscar otro Pokémon");
+    }
+
+    @ExceptionHandler(ApiPythonException.class)
+    public ModelAndView handleApiPython(ApiPythonException e,
+                                        HttpServletRequest request) {
+        return buildError("API Python no disponible", e.getMessage(), false,  request,"/", "Volver al inicio");
+    }
+
+    @ExceptionHandler(FlaskServerException.class)
+    public ModelAndView handleFlaskServer(FlaskServerException e,
+                                          HttpServletRequest request) {
+        return buildError("Error en el servidor Python", e.getMessage(), false, request, "/", "Volver al inicio");
+    }
+
+    @ExceptionHandler(ApiTimeoutException.class)
+    public ModelAndView handleTimeout(ApiTimeoutException e,
+                                      HttpServletRequest request) {
+        return buildError("Timeout de API",
+                e.getMessage(),
+                false, request, "/", "Volver al inicio");
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ModelAndView handleBadRequest(IllegalArgumentException e,
+                                         HttpServletRequest request) {
+        return buildError("Parámetro inválido",
+                e.getMessage(),
+                false, request, "/", "Volver");
+    }
+
+    // ── CRÍTICAS ──────────────────────────────────────────────────────
+
     @ExceptionHandler(DataAccessException.class)
-    public ModelAndView handleDataAccessException(DataAccessException e) {
-        ModelAndView mav = new ModelAndView("error");
-        mav.addObject("titulo", "Error de base de datos");
-        mav.addObject("mensaje", "No se pudo acceder a la base de datos. Por favor, inténtalo más tarde.");
-        mav.addObject("critico", false);
-        return mav;
+    public ModelAndView handleDataAccess(DataAccessException e,
+                                         HttpServletRequest request) {
+        return buildError("Error de base de datos",
+                "No se pudo acceder a la base de datos.",
+                true, request, "/login", "Ir al login");
     }
 
-    // Flask no disponible
-    @ExceptionHandler(ResourceAccessException.class)
-    public ModelAndView handleResourceAccessException(ResourceAccessException e) {
-        ModelAndView mav = new ModelAndView("error");
-        mav.addObject("titulo", "API Python no disponible");
-        mav.addObject("mensaje", "No se pudo conectar con la API Python. ¿Está arrancada?");
-        mav.addObject("critico", false);
-        return mav;
-    }
-
-    // Flask disponible pero Pokemon no existente
-    @ExceptionHandler(ResourceAccessException.class)
-    public ModelAndView handleInexistentPokemon(ResourceAccessException e) {
-        ModelAndView mav = new ModelAndView("error");
-        mav.addObject("titulo", "Pokemon Inexistente");
-        mav.addObject("mensaje", "El Pokemon buscado no existe. ¿Lo has escrito bien?");
-        mav.addObject("critico", false);
-        return mav;
-    }
-
-    // Cualquier otro error no previsto
     @ExceptionHandler(Exception.class)
-    public ModelAndView handleGenericException(Exception e) {
+    public ModelAndView handleGeneric(Exception e,
+                                      HttpServletRequest request) {
+        return buildError("Error inesperado",
+                "Ha ocurrido un error inesperado en el sistema.",
+                true, request, "/login", "Volver al inicio");
+    }
+
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ModelAndView handleAccessDenied(Exception e,
+                                           HttpServletRequest request) {
+        return buildError("Acceso denegado",
+                "No tienes permisos para acceder a esta página.",
+                true, request, "/", "Volver al inicio");
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ModelAndView handleNull(NullPointerException e,
+                                   HttpServletRequest request) {
+        return buildError("Error interno",
+                "Se ha producido un error inesperado (null).",
+                true, request,"/", "Volver al inicio");
+    }
+
+    // ── Helper ────────────────────────────────────────────────────────
+
+    private ModelAndView buildError(String titulo, String mensaje,
+                                    boolean critico,
+                                    HttpServletRequest request,
+                                    String fallbackUrl,
+                                    String volverTexto) {
+
         ModelAndView mav = new ModelAndView("error");
-        mav.addObject("titulo", "Error inesperado");
-        mav.addObject("mensaje", "Ha ocurrido un error inesperado en el sistema.");
-        mav.addObject("critico", true);
+
+        mav.addObject("titulo", titulo);
+        mav.addObject("mensaje", mensaje);
+        mav.addObject("critico", critico);
+
+        String referer = request.getHeader("Referer");
+        String volver = (referer != null) ? referer : fallbackUrl;
+
+        mav.addObject("volver", volver);
+        mav.addObject("volverTexto", volverTexto);
+
         return mav;
     }
 }

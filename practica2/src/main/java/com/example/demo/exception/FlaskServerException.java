@@ -1,4 +1,7 @@
 package com.example.demo.exception;
 
-public class FlaskServerException {
+public class FlaskServerException extends RuntimeException {
+    public FlaskServerException(String mensaje) {
+        super(mensaje);
+    }
 }

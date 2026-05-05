@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.exception.UsernameAlreadyExistsException;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
@@ -24,9 +25,9 @@ public class UserService {
         return repository.findUserByUsername(username).orElse(null);
     }
 
-    public void registrar(String username, String password) throws Exception {
+    public void registrar(String username, String password) {
         if (repository.findUserByUsername(username).isPresent()) {
-            throw new Exception("El nombre de usuario '" + username + "' ya está en uso.");
+            throw new UsernameAlreadyExistsException(username);
         }
 
         Role rol = roleRepository.findByRoleName("USER");
@@ -41,7 +42,6 @@ public class UserService {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setUserRole(rol);
-
         repository.save(user);
     }
 }
