@@ -2,9 +2,6 @@
 
 ## Práctica 1 - :
 
-<details closed><summary>Root</summary><div>Hola</div></details>
-
-
 ## Práctica 2 — Sistema Spring Boot + API Python:
 
 ## Descripción
