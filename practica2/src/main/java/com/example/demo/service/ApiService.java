@@ -18,7 +18,7 @@ public class ApiService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final String BASE_URL = "http://localhost:5000";
 
-    // ── Método base: lanza excepciones, no devuelve mapas de error ──
+    // Metodo base: lanza excepciones, no devuelve mapas de error ──
 
     private String llamarFlask(String endpoint) {
         try {
