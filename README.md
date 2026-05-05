@@ -30,6 +30,11 @@ practica1/
 └───Practica1Chat.iml
 ```
 
+### Funcionalidades
+- Envío de mensajes entre varios clientes
+- Baneo y desbaneo de usuarios por parte de clientes
+
+
 ## Práctica 2 — Sistema Spring Boot + API Python:
 
 ### Descripción
@@ -114,11 +119,11 @@ el panel de gestión de administración
 ### Pruebas con Postman
 Colección incluida con los siguientes endpoints de Flask (`localhost:5000`):
 
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | `/api/saludo` | Respuesta correcta |
-| GET | `/api/exception/archivo` | Error de archivo |
-| GET | `/api/exception/bbdd` | Error de base de datos |
-| GET | `/api/exception/pokemon` | Error de API Pokémon |
-| GET | `/api/pokemon/pikachu` | Pokémon real (éxito) |
-| GET | `/api/pokemon/pokemon-inexistente` | Pokémon inexistente (error) |
+| Método | Endpoint                           | Descripción                 |
+|--------|------------------------------------|-----------------------------|
+| GET    | `/api/saludo`                      | Respuesta correcta          |
+| GET    | `/api/exception/archivo`           | Error de archivo            |
+| GET    | `/api/exception/bbdd`              | Error de base de datos      |
+| GET    | `/api/exception/pokemon`           | Error de API Pokémon        |
+| GET    | `/api/pokemon/pikachu`             | Pokémon real (éxito)        |
+| GET    | `/api/pokemon/pokemon-inexistente` | Pokémon inexistente (error) |
