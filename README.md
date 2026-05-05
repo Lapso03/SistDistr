@@ -1,20 +1,49 @@
 # Prácticas evaluables de Sistemas Distribuidos
 
-## Práctica 1 - :
+## Práctica 1 - Sockets:
+
+### Descripción
+Sistema de baneo de usuarios bloqueando mensajes provenientes de puertos específicos.
+
+### Tecnologías
+- Maven
+- Ant
+- Tomcat
+- Java
+
+### Estructura del proyecto
+
+```
+practica1/
+├───src/java/es.ubu.lsi/client
+│   ├──ChatClient
+│   └──ChatClientImpl
+├───src/java/es.ubu.lsi/common
+│   └──ChatMessage
+├───src/java/es.ubu.lsi/common
+│   └──ChatMessage
+├───src/java/es.ubu.lsi/server
+│   ├──ChatServer
+│   └──ChatServerImpl
+├───build.xml
+├───pom.xml
+└───Practica1Chat.iml
+```
 
 ## Práctica 2 — Sistema Spring Boot + API Python:
 
-## Descripción
+### Descripción
 Aplicación web desarrollada con Spring Boot como frontend/backend y Flask (Python) como API REST.
 El objetivo es demostrar el manejo de excepciones tanto a nivel de acceso a datos como en llamadas a APIs de terceros.
 
-## Tecnologías
+### Tecnologías
 - **Backend:** Spring Boot 4, Spring Security, JPA, Hibernate, Thymeleaf
 - **API:** Python 3, Flask
 - **Base de datos:** MySQL 8
 - **Contenedores:** Docker, Docker Compose
 
-## Estructura del proyecto
+### Estructura del proyecto
+
 ```
 practica2/
 ├── api-python/
@@ -39,7 +68,7 @@ practica2/
 └── docker-compose.yml
 ```
 
-## Funcionalidades
+### Funcionalidades
 - Registro e inicio de sesión con contraseñas cifradas en BCrypt
 - Control de acceso por roles (USER / ADMIN)
 - Gestión de roles de usuarios
@@ -50,24 +79,24 @@ practica2/
     - Excepción de llamada a API de terceros (PokeAPI)
 - Traducción de errores no críticos al frontend en español
 
-## Cómo ejecutar
+### Cómo ejecutar
 
-### Requisitos
+#### Requisitos
 - Docker y Docker Compose
 - Python 3 con Flask (`pip install flask requests`)
 
-### Base de datos
+#### Base de datos
 ```bash
 docker-compose up mysqldb -d
 ```
 
-### API Python
+#### API Python
 ```bash
 cd api-python
 python app.py
 ```
 
-### Spring Boot
+#### Spring Boot
 Ejecutar la clase `Application.java` desde IntelliJ, o:
 ```bash
 ./mvnw spring-boot:run
@@ -82,7 +111,7 @@ Usuario administrador por defecto:
 Sin embargo se pueden crear nuevos usuarios administradores mediante 
 el panel de gestión de administración 
 
-## Pruebas con Postman
+### Pruebas con Postman
 Colección incluida con los siguientes endpoints de Flask (`localhost:5000`):
 
 | Método | Endpoint | Descripción |
