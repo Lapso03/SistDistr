@@ -29,6 +29,16 @@ public class GlobalExceptionHandler {
         return mav;
     }
 
+    // Flask disponible pero Pokemon no existente
+    @ExceptionHandler(ResourceAccessException.class)
+    public ModelAndView handleInexistentPokemon(ResourceAccessException e) {
+        ModelAndView mav = new ModelAndView("error");
+        mav.addObject("titulo", "Pokemon Inexistente");
+        mav.addObject("mensaje", "El Pokemon buscado no existe. ¿Lo has escrito bien?");
+        mav.addObject("critico", false);
+        return mav;
+    }
+
     // Cualquier otro error no previsto
     @ExceptionHandler(Exception.class)
     public ModelAndView handleGenericException(Exception e) {
