@@ -28,8 +28,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/registro").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/", "/login", "/registro", "/eventos/**",
+                                "/politicaPrivacidad", "/faq").permitAll()
+                        .requestMatchers("/api/notificaciones/**").authenticated()
+                        .requestMatchers("/admin/rol", "/admin/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "ORGANIZADOR")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -43,7 +46,6 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
-
         return http.build();
     }
 }

@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Gestión de Usuarios · EventApp</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+  <style>
+    body { background-color: #f5f6fa; }
+    .navbar-brand span { color: #e94560; }
+    .tabla-usuarios th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  </style>
 </head>
 <body>
-$END$
+
+<nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color:#2c3e50">
+  <a class="navbar-brand fw-bold fs-4" href="/">Event<span>App</span></a>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item"><a class="nav-link" href="/admin">Panel Admin</a></li>
+      <li class="nav-item"><a class="nav-link" href="/admin/eventos">Eventos</a></li>
+      <li class="nav-item"><a class="nav-link active" href="/admin/usuarios">Usuarios</a></li>
+    </ul>
+    <a href="/logout" class="btn btn-danger btn-sm">Salir</a>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1" style="color:#2c3e50">👥 Gestión de usuarios</h2>
+      <p class="text-muted mb-0"
+         th:text="${#lists.size(usuarios)} + ' usuarios registrados'"></p>
+    </div>
+    <a href="/admin/usuarios/nuevo" class="btn fw-semibold"
+       style="background:#e94560; color:white; border:none">+ Nuevo usuario</a>
+  </div>
+
+  <div class="card shadow-sm" style="border:none; border-radius:16px; overflow:hidden">
+    <table class="table tabla-usuarios table-hover mb-0">
+      <thead style="background-color:#2c3e50; color:white">
+      <tr>
+        <th class="px-4 py-3">ID</th>
+        <th class="py-3">Usuario</th>
+        <th class="py-3">Rol</th>
+        <th class="py-3">Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="u : ${usuarios}">
+        <td class="px-4 py-3 text-muted small" th:text="${u.id}"></td>
+        <td class="py-3 fw-semibold" th:text="${u.username}"></td>
+        <td class="py-3">
+                    <span class="badge rounded-pill px-3"
+                          th:classappend="${u.userRole.roleName == 'ADMIN'} ? 'bg-warning text-dark' :
+                                         (${u.userRole.roleName == 'ORGANIZADOR'} ? 'bg-info text-dark' : 'bg-secondary')"
+                          th:text="${u.userRole != null ? u.userRole.roleName : 'Sin rol'}"></span>
+        </td>
+        <td class="py-3">
+          <div class="d-flex gap-2">
+            <a th:href="@{/admin/usuarios/editar/{id}(id=${u.id})}"
+               class="btn btn-sm btn-outline-primary">✏️ Editar</a>
+            <form th:action="@{/admin/usuarios/eliminar/{id}(id=${u.id})}"
+                  method="post"
+                  onsubmit="return confirm('¿Eliminar usuario ' + '[[${u.username}]]' + '?')">
+              <button type="submit" class="btn btn-sm btn-outline-danger">🗑 Eliminar</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

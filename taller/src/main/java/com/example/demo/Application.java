@@ -40,11 +40,21 @@ public class Application {
 				roleRepository.save(userRole);
 			}
 
+			// Crear rol ORGANIZADOR si no existe
+			Role orgRole = roleRepository.findByRoleName("ORGANIZADOR");
+			if (orgRole == null) {
+				orgRole = new Role();
+				orgRole.setRoleName("ORGANIZADOR");
+				orgRole.setShowOnCreate(0);
+				roleRepository.save(orgRole);
+			}
+
 			// Crear usuario admin si no existe
 			if (userRepository.findUserByUsername("admin").isEmpty()) {
 				User admin = new User();
 				admin.setUsername("admin");
 				admin.setPassword(passwordEncoder.encode("admin123"));
+				admin.setEmail("admin@admin");
 				admin.setUserRole(adminRole);
 				userRepository.save(admin);
 				System.out.println(">>> Usuario admin creado con contraseña: admin123");

@@ -1,4 +1,11 @@
 package com.example.demo.model;
 
-public class CategoriaEvento {
+public enum CategoriaEvento {
+    CONCIERTO,
+    DEPORTE,
+    TEATRO,
+    FESTIVAL,
+    CONFERENCIA,
+    EXPOSICION,
+    OTRO
 }

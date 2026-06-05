@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
-import com.example.demo.exception.ApiTimeoutException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.repository.RoleRepository;
-import com.example.demo.service.ApiService;
+import com.example.demo.service.EventoService;
+import com.example.demo.service.ReservaService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,15 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class MainController {
 
-    @Autowired private ApiService apiService;
     @Autowired private UserService userService;
     @Autowired private UserRepository userRepository;
     @Autowired private RoleRepository roleRepository;
+    @Autowired private EventoService eventoService;
 
     // ── Públicas ──────────────────────────────────────────────
 
@@ -33,9 +32,15 @@ public class MainController {
 
     @PostMapping("/registro")
     public String registroSubmit(@RequestParam String username,
-                                 @RequestParam String password) {
-        userService.registrar(username, password);
+                                 @RequestParam String password,
+                                 @RequestParam(required = false) String email) {
+        userService.registrar(username, password, email);
         return "redirect:/login?registrado";
+    }
+
+    @GetMapping("/politica-privacidad")
+    public String politicaPrivacidad() {
+        return "politicaPrivacidad";
     }
 
     // ── Usuario logueado ──────────────────────────────────────
@@ -46,30 +51,34 @@ public class MainController {
         model.addAttribute("username", auth.getName());
         boolean isAdmin = auth.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        boolean isOrganizador = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ORGANIZADOR"));
         model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("tieneAccesoAdmin", isAdmin || isOrganizador);
+        // Muestra todos los próximos, agotados o no
+        model.addAttribute("eventos", eventoService.findProximos());
         return "index";
-    }
-
-    @GetMapping("/pokemon")
-    public String pokemonPage() { return "pokemon"; }
-
-    @GetMapping("/pokemon/buscar")
-    public String buscarPokemon(@RequestParam(required = false) String nombre, Model model) {
-
-        if (nombre != null && !nombre.isBlank()) {
-            Map<String, Object> resultado = apiService.getPokemonDetalle(nombre);
-            model.addAttribute("resultado", resultado);
-        }
-
-        return "pokemon";
     }
 
     // ── Solo ADMIN ────────────────────────────────────────────
 
+    @Autowired private ReservaService reservaService;
+
     @GetMapping("/admin")
-    public String adminPanel(Model model) {
+    public String adminPanel(Authentication auth, Model model) {
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        // Organizador va directo a gestión de eventos
+        if (!isAdmin) {
+            return "redirect:/admin/eventos";
+        }
+
         List<User> usuarios = userRepository.findAll();
         model.addAttribute("usuarios", usuarios);
+        model.addAttribute("totalUsuarios", usuarios.size());
+        model.addAttribute("totalEventos", eventoService.findAll().size());
+        model.addAttribute("totalReservas", reservaService.findAll().size());
         return "admin/panel";
     }
 
@@ -84,67 +93,5 @@ public class MainController {
             }
         });
         return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/test")
-    public String adminTest() { return "admin/test"; }
-
-    @GetMapping("/admin/test/saludo")
-    public String testSaludo(Model model) {
-        model.addAttribute("resultado", apiService.getSaludo());
-        model.addAttribute("tipo", "Saludo");
-        model.addAttribute("estado", "ok");
-        return "admin/test";
-    }
-
-    @GetMapping("/admin/test/archivo")
-    public String testArchivo(Model model) {
-        model.addAttribute("resultado", apiService.testExcepcionArchivo());
-        model.addAttribute("tipo", "Excepción de archivo");
-        model.addAttribute("estado", "ok");
-        return "admin/test";
-    }
-
-    @GetMapping("/admin/test/bbdd")
-    public String testBBDD(Model model) {
-        model.addAttribute("resultado", apiService.testExcepcionBBDD());
-        model.addAttribute("tipo", "Excepción de base de datos");
-        model.addAttribute("estado", "ok");
-        return "admin/test";
-    }
-
-    @GetMapping("/admin/test/pokemon")
-    public String testPokemon(Model model) {
-        model.addAttribute("resultado", apiService.testExcepcionPokemon());
-        model.addAttribute("tipo", "Excepción de API Pokémon");
-        model.addAttribute("estado", "ok");
-        return "admin/test";
-    }
-
-    @GetMapping("/admin/test/api")
-    public String testApi() {
-        apiService.getPokemonDetalle("pikachu"); // con Flask apagado
-        return "admin/test";
-    }
-
-    @GetMapping("/admin/test/flask")
-    public String testFlask() {
-        apiService.testExcepcionPokemon();
-        return "admin/test";
-    }
-
-    @GetMapping("/admin/test/timeout")
-    public String testTimeout() {
-        throw new ApiTimeoutException();
-    }
-
-    @GetMapping("/admin/test/generico")
-    public String testGenerico() {
-        throw new RuntimeException("Error forzado");
-    }
-
-    @GetMapping("/admin/test/param")
-    public String testParam() {
-        throw new IllegalArgumentException("Parámetro inválido");
     }
 }

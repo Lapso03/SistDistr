@@ -25,7 +25,7 @@ public class UserService {
         return repository.findUserByUsername(username).orElse(null);
     }
 
-    public void registrar(String username, String password) {
+    public void registrar(String username, String password, String email) {
         if (repository.findUserByUsername(username).isPresent()) {
             throw new UsernameAlreadyExistsException(username);
         }
@@ -41,6 +41,7 @@ public class UserService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setEmail(email);
         user.setUserRole(rol);
         repository.save(user);
     }

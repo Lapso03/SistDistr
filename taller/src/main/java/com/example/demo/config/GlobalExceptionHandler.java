@@ -18,38 +18,27 @@ public class GlobalExceptionHandler {
         return buildError("Usuario ya registrado", e.getMessage(), false, request, "/registro", "Volver al registro");
     }
 
-    @ExceptionHandler(PokemonNotFoundException.class)
-    public ModelAndView handlePokemonNotFound(PokemonNotFoundException e,
-                                              HttpServletRequest request) {
-        return buildError("Pokémon no encontrado", e.getMessage(), false,  request,"/pokemon", "Buscar otro Pokémon");
-    }
-
-    @ExceptionHandler(ApiPythonException.class)
-    public ModelAndView handleApiPython(ApiPythonException e,
-                                        HttpServletRequest request) {
-        return buildError("API Python no disponible", e.getMessage(), false,  request,"/", "Volver al inicio");
-    }
-
-    @ExceptionHandler(FlaskServerException.class)
-    public ModelAndView handleFlaskServer(FlaskServerException e,
-                                          HttpServletRequest request) {
-        return buildError("Error en el servidor Python", e.getMessage(), false, request, "/", "Volver al inicio");
-    }
-
-    @ExceptionHandler(ApiTimeoutException.class)
-    public ModelAndView handleTimeout(ApiTimeoutException e,
-                                      HttpServletRequest request) {
-        return buildError("Timeout de API",
-                e.getMessage(),
-                false, request, "/", "Volver al inicio");
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ModelAndView handleBadRequest(IllegalArgumentException e,
                                          HttpServletRequest request) {
         return buildError("Parámetro inválido",
                 e.getMessage(),
                 false, request, "/", "Volver");
+    }
+
+    @ExceptionHandler(EventoNotFoundException.class)
+    public ModelAndView handleEventoNotFound(EventoNotFoundException e, HttpServletRequest request) {
+        return buildError("Evento no encontrado", e.getMessage(), false, request, "/", "Volver al inicio");
+    }
+
+    @ExceptionHandler(AforoAgotadoException.class)
+    public ModelAndView handleAforoAgotado(AforoAgotadoException e, HttpServletRequest request) {
+        return buildError("Sin entradas disponibles", e.getMessage(), false, request, "/", "Ver otros eventos");
+    }
+
+    @ExceptionHandler(ReservaNotFoundException.class)
+    public ModelAndView handleReservaNotFound(ReservaNotFoundException e, HttpServletRequest request) {
+        return buildError("Reserva no encontrada", e.getMessage(), false, request, "/usuario/reservas", "Mis reservas");
     }
 
     // ── CRÍTICAS ──────────────────────────────────────────────────────
@@ -63,24 +52,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ModelAndView handleGeneric(Exception e,
-                                      HttpServletRequest request) {
+    public ModelAndView handleGeneric(Exception e, HttpServletRequest request) {
         return buildError("Error inesperado",
                 "Ha ocurrido un error inesperado en el sistema.",
                 true, request, "/login", "Volver al inicio");
     }
 
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
-    public ModelAndView handleAccessDenied(Exception e,
-                                           HttpServletRequest request) {
+    public ModelAndView handleAccessDenied(Exception e, HttpServletRequest request) {
         return buildError("Acceso denegado",
                 "No tienes permisos para acceder a esta página.",
-                true, request, "/", "Volver al inicio");
+                false, request, "/", "Volver al inicio");
     }
 
     @ExceptionHandler(NullPointerException.class)
-    public ModelAndView handleNull(NullPointerException e,
-                                   HttpServletRequest request) {
+    public ModelAndView handleNull(NullPointerException e, HttpServletRequest request) {
         return buildError("Error interno",
                 "Se ha producido un error inesperado (null).",
                 true, request,"/", "Volver al inicio");
@@ -88,11 +74,8 @@ public class GlobalExceptionHandler {
 
     // ── Helper ────────────────────────────────────────────────────────
 
-    private ModelAndView buildError(String titulo, String mensaje,
-                                    boolean critico,
-                                    HttpServletRequest request,
-                                    String fallbackUrl,
-                                    String volverTexto) {
+    private ModelAndView buildError(String titulo, String mensaje, boolean critico,
+                                    HttpServletRequest request, String fallbackUrl, String volverTexto) {
 
         ModelAndView mav = new ModelAndView("error");
 

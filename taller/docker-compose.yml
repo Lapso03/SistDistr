@@ -33,12 +33,38 @@ services:
       - SPRING_DATASOURCE_USERNAME=${MYSQLDB_USER_DES}
       - SPRING_DATASOURCE_PASSWORD=${MYSQLDB_ROOT_PASSWORD_DES}
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_SHOW_SQL=false
       - SERVER_PORT=${SPRING_DOCKER_PORT_DES}
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=admin123
+      - MAIL_HOST=mailpit
+      - MAIL_PORT=1025
     networks:
       - app-network
 
+  mailpit:
+    image: axllent/mailpit
+    container_name: taller-mailpit
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Panel web
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: taller-rabbitmq
+    ports:
+      - "5672:5672"    # AMQP
+      - "15672:15672"  # Panel web admin
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    networks:
+      - app-network
 volumes:
   db:
 

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NotificacionDTO {
+public class EmailDTO {
     private String username;
     private String nombreEvento;
     private String fecha;

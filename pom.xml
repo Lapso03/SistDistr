@@ -13,6 +13,7 @@
     <modules>
         <module>practica1</module>
         <module>practica2</module>
+        <module>taller</module>
     </modules>
 
 </project>

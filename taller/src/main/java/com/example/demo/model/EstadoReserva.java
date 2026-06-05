@@ -1,4 +1,7 @@
 package com.example.demo.model;
 
-public class EstadoReserva {
+public enum EstadoReserva {
+    PENDIENTE,
+    CONFIRMADA,
+    CANCELADA
 }

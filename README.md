@@ -61,7 +61,7 @@ practica2/
 │       ├── repository/       # Acceso a datos
 │       └── service/          # Lógica de negocio
 ├── src/main/resources/
-│   ├ application.properties
+│   ├── application.properties
 │   └── templates/            # Vistas Thymeleaf
 │       ├── admin/            # Panel de administración
 │       │   ├─panel.html
@@ -127,3 +127,119 @@ Colección incluida con los siguientes endpoints de Flask (`localhost:5000`):
 | GET    | `/api/exception/pokemon`           | Error de API Pokémon        |
 | GET    | `/api/pokemon/pikachu`             | Pokémon real (éxito)        |
 | GET    | `/api/pokemon/pokemon-inexistente` | Pokémon inexistente (error) |
+
+## Taller — Sistema de gestión de Eventos con Spring Boot:
+
+### Descripción
+El objetivo de la práctica es crear y desarrollar un Frontend sofisticado y estéticamente agradable, con un tema de libre elección (En este caso gestión de eventos) que brinde a los usuarios  una experiencia interactiva, intuitiva y cautivadora.
+
+### Tecnologías
+- **Backend:** Spring Boot 4, Spring Security, JPA, Hibernate, Thymeleaf
+- **Base de datos:** MySQL 8
+- **Contenedores:** Docker, Docker Compose
+- **Integración de mapas con Google maps**: OpenStreetMap con Leaflet.js y Google Maps
+- **Simulación de envío de mails**: Mailpit
+- **Colas MQ**: RabbitMQ 3 - Management
+- **LLM**: Gemini-2.5-flash para el sistema de FAQ
+
+### Estructura del proyecto
+
+```
+taller/
+├── src/main/java/
+│   └── com/example/demo/
+│       ├── config/           # Seguridad y autenticación
+│       ├── controller/       # Controladores web
+│       ├── dto/              # DTOs para mensajes
+│       ├── exception/        # Excepciones
+│       ├── faq/              # Frequently Asked Questions
+│       ├── model/            # Entidades JPA (User, Role, Reserva, Evento)
+│       ├── repository/       # Acceso a datos
+│       ├── service/          # Lógica de negocio
+│       └── Application.java  # Creación inicial de roles y un usuario administrador
+├── src/main/resources/
+│   ├── application.properties
+│   └── templates/            # Vistas Thymeleaf
+│       ├── admin/            # Panel de administración
+│       │   ├─eventos/
+│       │   │ ├─formulario.html
+│       │   │ └─lista.html
+│       │   ├─usuarios/
+│       │   │ ├─formulario.html
+│       │   │ └─lista.html
+│       │   └─panel.html
+│       ├── eventos/
+│       │   ├─buscar.html
+│       │   └─detalle.html
+│       ├── reserva/
+│       │   ├─confirmacion.html
+│       │   ├─formulario.html
+│       │   └─pago.html
+│       ├── usuario.reservas/
+│       │   ├─detalle.html
+│       │   └─lista.html
+│       ├── error.html
+│       ├── faq.html
+│       ├── index.html
+│       ├── login.html
+│       ├── politicaPrivacidad.html
+│       └── registro.html
+├── .env
+├── pom.xml
+├── Dockerfile
+└── docker-compose.yml
+```
+
+### Funcionalidades
+- Registro e inicio de sesión
+- Control de acceso por roles (USER / ADMIN)
+- Gestión de roles de usuarios
+- Gestión de eventos:
+-   - Excepción de apertura y lectura de archivos
+- Excepción de acceso a base de datos
+- Excepción de llamada a API de terceros (PokeAPI)
+- Simulación de correos al reservar entradas
+- 
+- Traducción de errores no críticos al frontend en español
+
+### Cómo ejecutar
+
+#### Requisitos
+- Docker y Docker Compose
+- Java 25
+
+#### Base de datos
+```bash
+docker-compose up mysqldb -d
+```
+
+#### Spring Boot
+Ejecutar la clase `Application.java` desde IntelliJ, o:
+```bash
+./mvnw spring-boot:run
+```
+
+La aplicación estará disponible en `http://localhost:8085`
+
+Usuario administrador por defecto:
+- **Usuario:** admin
+- **Contraseña:** admin123
+- **Email:** admin@admin
+
+Sin embargo se pueden crear nuevos usuarios administradores mediante
+el panel de gestión de usuarios.
+
+### Pruebas con Mailpit
+Podemos simular recibir correos electrónicos con las reservas hechas después de hacer el pago en (`http://localhost:8025`).
+
+Allí veremos los correos destinados a cada usuario que tenga correo electrónico, 
+los usuarios que no añadan su correo electrónico en el registro nunca tendrán esta opción. 
+
+### Acceso a la página de RabbitMQ 
+
+Para acceder a las estadísticas, poder ver y gestionar las colas MQ vamos a (`http://localhost:15672/`). 
+Ya en esta página accederemos con usuario `admin` y contraseña `admin123`
+
+### Pruebas con Postman
+Colección incluida con los siguientes endpoints (`localhost:5000`):
+

@@ -27,6 +27,9 @@ public class User implements Serializable {
     @Column(name = "password", length = 250)
     private String password;
 
+    @Column(name = "email",length = 150)
+    private String email;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Role userRole;
 }
