@@ -59,8 +59,8 @@ public class EmailService {
                             </div>
                             <hr style="border-color:#dfe6e9;margin:24px 0">
                             <p style="color:#b2bec3;font-size:0.8rem;text-align:center">
-                                © 2025 EventApp ·
-                                <a href="http://localhost:8085/politicaPrivacidad"
+                                © 2026 EventApp ·
+                                <a href="http://localhost:8085/politica-privacidad"
                                    style="color:#b2bec3">Política de privacidad</a>
                             </p>
                         </div>
@@ -151,8 +151,8 @@ public class EmailService {
                             </div>
                             <hr style="border-color:#dfe6e9;margin:24px 0">
                             <p style="color:#b2bec3;font-size:0.8rem;text-align:center">
-                                © 2025 EventApp ·
-                                <a href="http://localhost:8085/politicaPrivacidad"
+                                © 2026 EventApp ·
+                                <a href="http://localhost:8085/politica-privacidad"
                                    style="color:#b2bec3">Política de privacidad</a>
                             </p>
                         </div>

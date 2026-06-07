@@ -26,7 +26,7 @@ public class ReservaConsumer {
             );
         } catch (Exception e) {
             // Si falla (aforo agotado, ya tiene reserva, etc.) se descarta silenciosamente
-            // En producción se enviaría notificación de error al usuario
+            // Se enviaría notificación de error al usuario
             System.out.println("Reserva descartada para " + request.getUsername()
                     + ": " + e.getMessage());
         }

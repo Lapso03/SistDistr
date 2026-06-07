@@ -74,7 +74,7 @@ public class ReservaService {
         reserva.setEstado(EstadoReserva.PENDIENTE);
         reserva.setRecordatorio(recordatorio);
 
-        reservaRepository.save(reserva); // @PrePersist calcula fecha y precio
+        reservaRepository.save(reserva);
 
         eventoService.incrementarAforo(eventoId, numEntradas);
 

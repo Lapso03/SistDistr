@@ -131,7 +131,7 @@ Colección incluida con los siguientes endpoints de Flask (`localhost:5000`):
 ## Taller — Sistema de gestión de Eventos con Spring Boot:
 
 ### Descripción
-El objetivo de la práctica es crear y desarrollar un Frontend sofisticado y estéticamente agradable, con un tema de libre elección (En este caso gestión de eventos) que brinde a los usuarios  una experiencia interactiva, intuitiva y cautivadora.
+El objetivo de la práctica es crear y desarrollar un Frontend sofisticado y estéticamente agradable, con un tema de libre elección (En este caso gestión de eventos) que brinde a los usuarios una experiencia interactiva, intuitiva y cautivadora.
 
 ### Tecnologías
 - **Backend:** Spring Boot 4, Spring Security, JPA, Hibernate, Thymeleaf
@@ -192,15 +192,35 @@ taller/
 
 ### Funcionalidades
 - Registro e inicio de sesión
+
+
 - Control de acceso por roles (USER / ADMIN)
+
+
 - Gestión de roles de usuarios
-- Gestión de eventos:
--   - Excepción de apertura y lectura de archivos
-- Excepción de acceso a base de datos
-- Excepción de llamada a API de terceros (PokeAPI)
+ 
+
+- Gestión de eventos
+
+
+- Gestión de las reservas mediante colas MQ
+
+
+- Gestión de Excepciones (Traducción de errores al frontend):
+  - Por aforo agotado de un evento
+  - Por duplicación de correo electrónico
+  - Por duplicación de nombre de usuario
+  - Por intento de reserva de un evento que ha sido eliminado o cancelado
+  - Por intento de ver un evento que ha sido eliminado o cancelado
+
+
 - Simulación de correos al reservar entradas
-- 
-- Traducción de errores no críticos al frontend en español
+
+
+- Simulación de pasarela de pago
+
+
+- Preguntas a un LLM
 
 ### Cómo ejecutar
 
@@ -241,5 +261,20 @@ Para acceder a las estadísticas, poder ver y gestionar las colas MQ vamos a (`h
 Ya en esta página accederemos con usuario `admin` y contraseña `admin123`
 
 ### Pruebas con Postman
-Colección incluida con los siguientes endpoints (`localhost:5000`):
+Colección incluida con los siguientes endpoints:
 
+| Método | Endpoint                | Descripción                              | Body                                                               |
+|--------|-------------------------|------------------------------------------|--------------------------------------------------------------------|
+| POST   | `/login`                | Login admin                              | username=admin, password=admin123                                  |
+| POST   | `/login`                | Login usuario normal no existente        | username=maria, password=maria123                                  |
+| POST   | `/login`                | Login usuario normal existente           | username=juan, password=juan123                                    |
+| GET    | `/login?logout`         | Logout                                   | -                                                                  |
+| POST   | `/registro`             | Registro nuevo usuario                   | username=paula, password=paula123                                  |
+| POST   | `/registro`             | Registro usuario duplicado (error)       | username=juan, password=juan124                                    |
+| POST   | `/faq`                  | FAQ: Preguntar sobre cancelaciones       | question=¿Puedo cancelar una reserva?, conversationId=abc123       |
+| POST   | `/faq`                  | FAQ: Preguntar sobre algo no relacionado | question=¿Cuánto cuesta un hotel en Madrid?, conversationId=abc123 |
+| GET    | `/politica-privacidad`  | Política de Privacidad                   | -                                                                  |
+
+### Preguntas al LLM
+Se puede hacer preguntas al asistente para no tener que leerte toda la política de privacidad. Así preguntas algo específico y te responde lo que quieres saber.
+Esto funciona mediante una API de Google AI Studio con un modelo de Gemini.

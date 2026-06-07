@@ -63,7 +63,7 @@ public class PrivacidadFaqRepository {
 
         data.put(PrivacidadFaqIntent.GENERAL,
                 "La política de privacidad de EventApp cumple con el RGPD y la LOPDGDD. " +
-                        "Puedes consultarla completa en /politicaPrivacidad. " +
+                        "Puedes consultarla completa en /politica-privacidad. " +
                         "Incluye secciones sobre datos recogidos, uso, cancelaciones, seguridad, " +
                         "cookies, derechos y contacto.");
     }
@@ -77,6 +77,6 @@ public class PrivacidadFaqRepository {
     public String findAnswer(PrivacidadFaqIntent intent) {
         return data.getOrDefault(intent,
                 "No tengo información específica sobre eso. Consulta la política " +
-                        "de privacidad completa en /politicaPrivacidad.");
+                        "de privacidad completa en /politica-privacidad.");
     }
 }
