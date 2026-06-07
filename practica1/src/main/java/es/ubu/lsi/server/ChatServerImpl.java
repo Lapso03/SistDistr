@@ -43,6 +43,24 @@ public class ChatServerImpl implements ChatServer {
 	/** Server socket. */
 	private ServerSocket serverSocket;
 
+	/** Safe deserialization stream limited to expected chat payload classes. */
+	private static class RestrictedObjectInputStream extends ObjectInputStream {
+		RestrictedObjectInputStream(InputStream in) throws IOException {
+			super(in);
+		}
+
+		@Override
+		protected Class<?> resolveClass(ObjectStreamClass desc)
+				throws IOException, ClassNotFoundException {
+			String className = desc.getName();
+			if ("java.lang.String".equals(className)
+					|| className.startsWith("es.ubu.lsi.common.ChatMessage")) {
+				return super.resolveClass(desc);
+			}
+			throw new InvalidClassException("Unauthorized deserialization type", className);
+		}
+	}
+
 	/** Banned users list. */
 //	private int[] blacklist = {50001,50002};
 	
@@ -266,7 +284,7 @@ public class ChatServerImpl implements ChatServer {
 			try {
 				// create output first
 				sOutput = new ObjectOutputStream(socket.getOutputStream());
-				sInput = new ObjectInputStream(socket.getInputStream());
+				sInput = new RestrictedObjectInputStream(socket.getInputStream());
 				// read the username
 				username = (String) sInput.readObject();
 

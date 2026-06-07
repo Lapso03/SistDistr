@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EventApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
+    <style>
+        body { background-color: #f5f6fa; display: flex; flex-direction: column; min-height: 100vh; }
+        main { flex: 1; }
+        .navbar-brand span { color: #e94560; }
+        .hero {
+            background: linear-gradient(135deg, #2c3e50 0%, #e94560 100%);
+            min-height: 420px;
+            display: flex;
+            align-items: center;
+        }
+        .categoria-badge { font-size: 0.75rem; letter-spacing: 0.05em; }
+        .evento-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            border-radius: 12px;
+        }
+        .evento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
+        }
+        .evento-img { height: 180px; object-fit: cover; }
+        .evento-img-placeholder {
+            height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .precio-tag { font-size: 1.1rem; font-weight: 700; color: #2c3e50; }
+        .aforo-bar { height: 5px; }
+        .filtros-bar { background: white; border-bottom: 1px solid #dfe6e9; }
+        footer {
+            background-color: #2c3e50;
+            color: #b2bec3;
+            font-size: 0.88rem;
+        }
+        footer a { color: #dfe6e9; text-decoration: none; }
+        footer a:hover { color: white; }
+        .footer-divider { border-color: #3d5166; }
+        .github-icon { width: 20px; height: 20px; fill: #dfe6e9; vertical-align: middle; }
+        .github-icon:hover { fill: white; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<!-- Navbar completo de index.html como ejemplo -->
+<nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color:#2c3e50">
+    <a class="navbar-brand fw-bold fs-4" href="/">Event<span>App</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link" href="/eventos/buscar">Explorar eventos</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-white small">Hola, <strong th:text="${username}"></strong></span>
+            <a href="/usuario/reservas" class="btn btn-outline-light btn-sm">🎟️ Mis reservas</a>
+
+            <a th:if="${tieneAccesoAdmin}" href="/admin" class="btn btn-warning btn-sm">⚙️ Admin</a>
+            <a href="/logout" class="btn btn-danger btn-sm">Salir</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <!-- Hero -->
+    <div class="hero text-white">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1 class="display-4 fw-bold mb-3">
+                        Descubre eventos<br>
+                        <span style="color:#ffd6de">cerca de ti</span>
+                    </h1>
+                    <p class="fs-5 mb-4" style="color:rgba(255,255,255,0.8)">
+                        Conciertos, deportes, teatro y mucho más. Reserva tus entradas en segundos.
+                    </p>
+                    <a href="/eventos/buscar" class="btn btn-light btn-lg px-5 fw-bold"
+                       style="color:#e94560">
+                        Ver todos los eventos
+                    </a>
+                </div>
+                <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+                    <div style="font-size: 10rem; opacity: 0.2;">🎪</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filtros-bar py-3">
+        <div class="container">
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="/" class="btn btn-sm" style="background:#2c3e50; color:white">Todos</a>
+                <a href="/eventos/buscar?categoria=CONCIERTO"   class="btn btn-sm btn-outline-secondary">🎵 Conciertos</a>
+                <a href="/eventos/buscar?categoria=DEPORTE"     class="btn btn-sm btn-outline-secondary">⚽ Deportes</a>
+                <a href="/eventos/buscar?categoria=TEATRO"      class="btn btn-sm btn-outline-secondary">🎭 Teatro</a>
+                <a href="/eventos/buscar?categoria=FESTIVAL"    class="btn btn-sm btn-outline-secondary">🎪 Festivales</a>
+                <a href="/eventos/buscar?categoria=CONFERENCIA" class="btn btn-sm btn-outline-secondary">🎤 Conferencias</a>
+                <a href="/eventos/buscar?categoria=EXPOSICION"  class="btn btn-sm btn-outline-secondary">🖼️ Exposiciones</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid de eventos -->
+    <div class="container py-5">
+        <h2 class="fw-bold mb-4" style="color:#2c3e50">Próximos eventos</h2>
+
+        <div th:if="${#lists.isEmpty(eventos)}" class="text-center py-5 text-muted">
+            <div style="font-size:4rem">🎭</div>
+            <h5 class="mt-3">No hay eventos disponibles próximamente</h5>
+            <p>Vuelve pronto, ¡se avecinan cosas!</p>
+        </div>
+
+        <div class="row g-4" th:unless="${#lists.isEmpty(eventos)}">
+            <div class="col-md-6 col-lg-4" th:each="evento : ${eventos}">
+                <div class="card evento-card shadow-sm h-100">
+                    <div th:if="${evento.imagen != null and !evento.imagen.isEmpty()}">
+                        <img th:src="${evento.imagen}" class="card-img-top evento-img" th:alt="${evento.nombre}">
+                    </div>
+                    <div th:unless="${evento.imagen != null and !evento.imagen.isEmpty()}"
+                         class="evento-img-placeholder rounded-top">
+                        <span th:switch="${evento.categoria.name()}">
+                            <span th:case="'CONCIERTO'">🎵</span>
+                            <span th:case="'DEPORTE'">⚽</span>
+                            <span th:case="'TEATRO'">🎭</span>
+                            <span th:case="'FESTIVAL'">🎪</span>
+                            <span th:case="'CONFERENCIA'">🎤</span>
+                            <span th:case="'EXPOSICION'">🖼️</span>
+                            <span th:case="*">🎟️</span>
+                        </span>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <span class="badge mb-2 categoria-badge"
+                              style="background:#2c3e50; width:fit-content"
+                              th:text="${evento.categoria}"></span>
+                        <h5 class="card-title fw-bold" th:text="${evento.nombre}"></h5>
+                        <p class="text-muted small mb-1">
+                            📅 <span th:text="${#temporals.format(evento.fecha, 'dd MMM yyyy · HH:mm')}"></span>
+                        </p>
+                        <p class="text-muted small mb-3">
+                            📍 <span th:text="${evento.lugar}"></span>
+                        </p>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between small text-muted mb-1">
+                                <span>Entradas disponibles</span>
+                                <span th:text="${evento.aforoDisponible} + ' / ' + ${evento.aforo}"></span>
+                            </div>
+                            <div class="progress aforo-bar">
+                                <div class="progress-bar"
+                                     th:style="'width:' + ${(evento.aforoOcupado * 100) / evento.aforo} + '%'"
+                                     th:classappend="${evento.aforoDisponible < 10} ? 'bg-danger' : 'bg-success'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="precio-tag" th:text="${evento.precio} + ' €'"></span>
+                            <div class="d-flex gap-2">
+                                <a th:href="@{/eventos/{id}(id=${evento.id})}"
+                                   class="btn btn-sm btn-outline-secondary">Ver más</a>
+                                <a th:href="@{/reservar/{id}(id=${evento.id})}"
+                                   class="btn btn-sm fw-bold"
+                                   th:classappend="${evento.tieneEntradas} ? '' : 'disabled'"
+                                   style="background:#e94560; color:white; border:none"
+                                   th:text="${evento.tieneEntradas} ? 'Reservar' : 'Agotado'">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="py-5 mt-auto">
+    <div class="container">
+        <div class="row g-4">
+
+            <!-- Logo y descripción -->
+            <div class="col-md-4">
+                <div class="fw-bold fs-5 mb-2">
+                    Event<span style="color:#e94560">App</span>
+                </div>
+                <p class="mb-3" style="color:#8395a7; font-size:0.85rem">
+                    Tu plataforma para descubrir y reservar entradas para los mejores eventos.
+                </p>
+                <!-- GitHub -->
+                <a href="https://github.com/Lapso03/SistDistr" target="_blank"
+                   class="d-inline-flex align-items-center gap-2"
+                   style="color:#dfe6e9; text-decoration:none">
+                    <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577
+                                 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755
+                                 -1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305
+                                 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93
+                                 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322
+                                 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405
+                                 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84
+                                 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81
+                                 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795
+                                 24 17.295 24 12c0-6.63-5.37-12-12-12"/>
+                    </svg>
+                    GitHub del proyecto
+                </a>
+            </div>
+
+            <!-- Contacto -->
+            <div class="col-md-4">
+                <div class="fw-semibold mb-3" style="color:#dfe6e9">Contacto</div>
+                <div class="d-flex flex-column gap-2" style="color:#8395a7">
+                    <div> Sergio Buil Laliena</div>
+                    <div>
+                        📍 Av. de Cantabria, s/n, 09006 Burgos
+                    </div>
+                    <div>
+                        ✉️ <a href="mailto:sbl1003@alu.ubu.es">info@eventapp.es</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legal -->
+            <div class="col-md-4">
+                <div class="fw-semibold mb-3" style="color:#dfe6e9">Legal</div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="/faq">🤖 Asistente de privacidad</a>
+                    <a href="/politica-privacidad">📄 Política de privacidad</a>
+                    <a href="/politica-privacidad#cancelaciones">🔄 Política de cancelaciones</a>
+                    <a href="/politica-privacidad#cookies">🍪 Política de cookies</a>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="footer-divider my-4">
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2"
+             style="color:#636e72; font-size:0.82rem">
+            <span>© 2026 EventApp. Todos los derechos reservados.</span>
+        </div>
+    </div>
+</footer>
+
+
+<div id="app-data" th:data-username="${username}" style="display:none"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</body>
+</html>

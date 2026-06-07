@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Política de Privacidad · EventApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
+    <style>
+        body { background-color: #f5f6fa; }
+        .navbar-brand span { color: #e94560; }
+        .policy-card { border: none; border-radius: 16px; }
+        .section-anchor { scroll-margin-top: 80px; }
+        .policy-section { border-left: 4px solid #e94560; padding-left: 1.5rem; margin-bottom: 2.5rem; }
+        .policy-section h4 { color: #2c3e50; font-weight: 700; }
+        .badge-info-custom { background: #eaf0fb; color: #2c3e50; font-weight: 600; font-size: 0.8rem; }
+        .toc-link { color: #2c3e50; text-decoration: none; font-size: 0.9rem; }
+        .toc-link:hover { color: #e94560; }
+        footer { background-color: #2c3e50; color: #b2bec3; font-size: 0.88rem; }
+        footer a { color: #dfe6e9; text-decoration: none; }
+        footer a:hover { color: white; }
+        .footer-divider { border-color: #3d5166; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color:#2c3e50">
+    <a class="navbar-brand fw-bold fs-4" href="/">Event<span>App</span></a>
+    <div class="d-flex align-items-center gap-3">
+        <a href="/" class="btn btn-outline-light btn-sm">← Volver al inicio</a>
+    </div>
+</nav>
+
+<div class="container py-5" style="max-width: 860px">
+
+    <!-- Cabecera -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold" style="color:#2c3e50">Política de Privacidad</h1>
+        <p class="text-muted">Última actualización: junio de 2026</p>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded"
+             style="background:#eaf0fb; color:#2c3e50; font-size:0.85rem">
+            📍 EventApp · Av. de Cantabria, s/n, 09006 Burgos ·
+            <a href="mailto:sbl1003@alu.ubu.es" style="color:#e94560">info@eventapp.es</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Índice -->
+        <div class="col-lg-3">
+            <div class="card policy-card shadow-sm p-3 sticky-top" style="top:20px">
+                <div class="fw-bold small text-muted text-uppercase mb-3"
+                     style="letter-spacing:0.05em">Contenido</div>
+                <div class="d-flex flex-column gap-2">
+                    <a href="#datos" class="toc-link">1. Datos que recogemos</a>
+                    <a href="#uso" class="toc-link">2. Uso de los datos</a>
+                    <a href="#cancelaciones" class="toc-link">3. Cancelación de reservas</a>
+                    <a href="#cancelacion-eventos" class="toc-link">4. Cancelación de eventos</a>
+                    <a href="#seguridad" class="toc-link">5. Seguridad</a>
+                    <a href="#cookies" class="toc-link">6. Cookies</a>
+                    <a href="#derechos" class="toc-link">7. Tus derechos</a>
+                    <a href="#contacto" class="toc-link">8. Contacto</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="col-lg-9">
+            <div class="card policy-card shadow-sm p-5">
+
+                <p class="text-muted mb-5">
+                    En <strong>EventApp</strong> nos comprometemos a proteger tu privacidad y a tratar
+                    tus datos personales con transparencia y responsabilidad, de conformidad con el
+                    Reglamento General de Protección de Datos (RGPD) y la Ley Orgánica 3/2018 de
+                    Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
+                </p>
+
+                <!-- 1 -->
+                <div class="policy-section section-anchor" id="datos">
+                    <h4 class="mb-3">1. Datos que recogemos</h4>
+                    <p>Recogemos únicamente los datos necesarios para prestarte el servicio:</p>
+                    <ul class="text-muted">
+                        <li><strong>Datos de registro:</strong> nombre de usuario y contraseña
+                            (almacenada cifrada con BCrypt).</li>
+                        <li><strong>Datos de reserva:</strong> evento seleccionado, número de
+                            entradas, fecha de reserva y precio total.</li>
+                        <li><strong>Datos de pago:</strong> EventApp realiza una simulación de pago.
+                            Ningún dato de tarjeta bancaria es procesado ni almacenado.</li>
+                        <li><strong>Preferencias:</strong> si activas el recordatorio de eventos,
+                            almacenamos esa preferencia asociada a tu reserva.</li>
+                    </ul>
+                </div>
+
+                <!-- 2 -->
+                <div class="policy-section section-anchor" id="uso">
+                    <h4 class="mb-3">2. Uso de los datos</h4>
+                    <p class="text-muted">Utilizamos tus datos exclusivamente para:</p>
+                    <ul class="text-muted">
+                        <li>Gestionar tu cuenta y autenticarte de forma segura.</li>
+                        <li>Procesar y gestionar tus reservas de entradas.</li>
+                        <li>Enviarte notificaciones de recordatorio si las has solicitado.</li>
+                        <li>Garantizar el correcto funcionamiento de la plataforma.</li>
+                    </ul>
+                    <p class="text-muted">
+                        No cedemos tus datos a terceros ni los utilizamos con fines comerciales
+                        o publicitarios.
+                    </p>
+                </div>
+
+                <!-- 3 -->
+                <div class="policy-section section-anchor" id="cancelaciones">
+                    <h4 class="mb-3">3. Política de cancelación de reservas</h4>
+
+                    <div class="p-3 rounded mb-3" style="background:#eaf0fb">
+                        <strong>Resumen:</strong> puedes cancelar tu reserva gratuitamente hasta
+                        48 horas antes del evento.
+                    </div>
+
+                    <h6 class="fw-bold">3.1 Plazo de cancelación gratuita</h6>
+                    <p class="text-muted">
+                        El usuario puede cancelar cualquier reserva confirmada de forma gratuita
+                        hasta <strong>48 horas antes</strong> del inicio del evento. La cancelación
+                        se puede realizar desde la sección "Mis reservas" de la plataforma.
+                    </p>
+
+                    <h6 class="fw-bold">3.2 Cancelación fuera de plazo</h6>
+                    <p class="text-muted">
+                        Las cancelaciones realizadas en las <strong>48 horas previas</strong> al
+                        evento no tendrán derecho a reembolso, salvo que el propio evento sea
+                        cancelado o modificado sustancialmente por el organizador.
+                    </p>
+
+                    <h6 class="fw-bold">3.3 Proceso de reembolso</h6>
+                    <p class="text-muted">
+                        Al tratarse de una plataforma de demostración, los pagos son simulados y
+                        no se realizan cargos reales. En un entorno de producción, el reembolso se
+                        procesaría en un plazo máximo de <strong>5 a 10 días hábiles</strong>
+                        por el mismo método de pago utilizado en la compra.
+                    </p>
+
+                    <h6 class="fw-bold">3.4 Reservas en estado PENDIENTE</h6>
+                    <p class="text-muted">
+                        Las reservas que no completen el proceso de pago y queden en estado
+                        <span class="badge" style="background:#fff3cd; color:#856404">PENDIENTE</span>
+                        pueden ser canceladas en cualquier momento sin penalización. El aforo
+                        reservado se liberará automáticamente al cancelar.
+                    </p>
+
+                    <h6 class="fw-bold">3.5 Limitación por evento</h6>
+                    <p class="text-muted">
+                        Cada usuario puede tener una única reserva activa por evento. Si deseas
+                        modificar el número de entradas, deberás cancelar la reserva existente
+                        y realizar una nueva, sujeta a disponibilidad de aforo.
+                    </p>
+                </div>
+
+                <!-- 4 -->
+                <div class="policy-section section-anchor" id="cancelacion-eventos">
+                    <h4 class="mb-3">4. Política de cancelación de eventos</h4>
+
+                    <div class="p-3 rounded mb-3" style="background:#fce8e8">
+                        <strong>Importante:</strong> si un evento es cancelado por el organizador,
+                        todos los usuarios con reservas activas serán reembolsados íntegramente.
+                    </div>
+
+                    <h6 class="fw-bold">4.1 Cancelación por parte del organizador</h6>
+                    <p class="text-muted">
+                        El organizador o administrador del evento puede cancelar un evento en
+                        cualquier momento desde el panel de administración. En este caso:
+                    </p>
+                    <ul class="text-muted">
+                        <li>Todas las reservas confirmadas y pendientes del evento serán canceladas.</li>
+                        <li>Los usuarios afectados recibirán una notificación informándoles de la cancelación.</li>
+                        <li>Se procederá al reembolso íntegro del importe pagado.</li>
+                    </ul>
+
+                    <h6 class="fw-bold">4.2 Modificación de fecha u hora</h6>
+                    <p class="text-muted">
+                        Si el organizador modifica la fecha, hora o lugar del evento de forma
+                        sustancial (más de 24 horas de diferencia o cambio de ciudad), el usuario
+                        tendrá derecho a cancelar su reserva y recibir el reembolso completo,
+                        independientemente del plazo de cancelación habitual.
+                    </p>
+
+                    <h6 class="fw-bold">4.3 Causas de fuerza mayor</h6>
+                    <p class="text-muted">
+                        En casos de cancelación por causas de fuerza mayor (desastres naturales,
+                        restricciones gubernamentales, emergencias sanitarias u otras circunstancias
+                        extraordinarias ajenas al organizador), se aplicará igualmente el reembolso
+                        íntegro a todos los usuarios con reservas activas.
+                    </p>
+
+                    <h6 class="fw-bold">4.4 Responsabilidad del organizador</h6>
+                    <p class="text-muted">
+                        Los organizadores con rol <span class="badge bg-info text-dark">ORGANIZADOR</span>
+                        son responsables de mantener actualizados los datos del evento (aforo,
+                        fecha, lugar) y de comunicar cualquier cambio con la máxima antelación
+                        posible a través de la plataforma.
+                    </p>
+                </div>
+
+                <!-- 5 -->
+                <div class="policy-section section-anchor" id="seguridad">
+                    <h4 class="mb-3">5. Seguridad de los datos</h4>
+                    <p class="text-muted">
+                        EventApp implementa las siguientes medidas de seguridad:
+                    </p>
+                    <ul class="text-muted">
+                        <li><strong>Contraseñas:</strong> almacenadas con hash BCrypt, algoritmo
+                            de cifrado unidireccional estándar del sector.</li>
+                        <li><strong>Comunicaciones WebSocket:</strong> los mensajes de notificación
+                            en tiempo real se transmiten cifrados mediante AES-128.</li>
+                        <li><strong>Control de acceso:</strong> sistema de roles (USER, ORGANIZADOR,
+                            ADMIN) que limita el acceso a las funcionalidades según el perfil.</li>
+                        <li><strong>Sesiones:</strong> gestionadas de forma segura mediante
+                            Spring Security con protección CSRF desactivada solo para rutas
+                            específicas de API.</li>
+                    </ul>
+                </div>
+
+                <!-- 6 -->
+                <div class="policy-section section-anchor" id="cookies">
+                    <h4 class="mb-3">6. Política de cookies</h4>
+                    <p class="text-muted">
+                        EventApp utiliza únicamente <strong>cookies de sesión técnicas</strong>
+                        necesarias para el funcionamiento de la plataforma:
+                    </p>
+                    <ul class="text-muted">
+                        <li><strong>JSESSIONID:</strong> cookie de sesión de Spring Boot para
+                            mantener al usuario autenticado durante la navegación. Se elimina al
+                            cerrar el navegador.</li>
+                    </ul>
+                    <p class="text-muted">
+                        No utilizamos cookies de seguimiento, publicidad ni análisis de terceros.
+                    </p>
+                </div>
+
+                <!-- 7 -->
+                <div class="policy-section section-anchor" id="derechos">
+                    <h4 class="mb-3">7. Tus derechos</h4>
+                    <p class="text-muted">De acuerdo con el RGPD, tienes derecho a:</p>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="p-3 rounded" style="background:#f5f6fa">
+                                <strong>Acceso</strong>
+                                <p class="small text-muted mb-0">
+                                    Conocer qué datos personales tenemos sobre ti.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded" style="background:#f5f6fa">
+                                <strong>Rectificación</strong>
+                                <p class="small text-muted mb-0">
+                                    Corregir datos inexactos o incompletos.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded" style="background:#f5f6fa">
+                                <strong>Supresión</strong>
+                                <p class="small text-muted mb-0">
+                                    Solicitar la eliminación de tus datos.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 rounded" style="background:#f5f6fa">
+                                <strong>Portabilidad</strong>
+                                <p class="small text-muted mb-0">
+                                    Recibir tus datos en formato estructurado.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mt-3">
+                        Para ejercer cualquiera de estos derechos, contacta con nosotros en
+                        <a href="mailto:sbl1003@alu.ubu.es" style="color:#e94560">info@eventapp.es</a>.
+                    </p>
+                </div>
+
+                <!-- 8 -->
+                <div class="policy-section section-anchor" id="contacto">
+                    <h4 class="mb-3">8. Contacto</h4>
+                    <p class="text-muted">
+                        Si tienes cualquier duda sobre esta política de privacidad o sobre el
+                        tratamiento de tus datos, puedes contactarnos:
+                    </p>
+                    <div class="d-flex flex-column gap-2 text-muted">
+                        <div>📍 Av. de Cantabria, s/n, 09006 Burgos</div>
+                        <div>✉️ <a href="mailto:sbl1003@alu.ubu.es" style="color:#e94560">info@eventapp.es</a></div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 viewBox="0 0 24 24" fill="#636e72" style="vertical-align:middle; margin-right:4px">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577
+                                         0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755
+                                         -1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305
+                                         3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93
+                                         0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322
+                                         3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405
+                                         2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84
+                                         1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81
+                                         2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795
+                                         24 17.295 24 12c0-6.63-5.37-12-12-12"/>
+                            </svg>
+                            <a href="https://github.com/Lapso03/SistDistr" target="_blank"
+                               style="color:#e94560">github.com/Lapso03/SistDistr</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="py-4 mt-5">
+    <div class="container">
+        <hr class="footer-divider mb-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2"
+             style="color:#636e72; font-size:0.82rem">
+            <span>© 2025 EventApp. Todos los derechos reservados.</span>
+            <a href="/" style="color:#8395a7">← Volver al inicio</a>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+</body>
+</html>

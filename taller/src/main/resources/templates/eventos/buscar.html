@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Explorar eventos · EventApp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
+    <style>
+        body { background-color: #f5f6fa; }
+        .navbar-brand span { color: #e94560; }
+        .evento-card {
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .evento-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12) !important;
+        }
+        .evento-img { height: 160px; object-fit: cover; }
+        .evento-img-placeholder {
+            height: 160px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        .btn-categoria.activo { background: #2c3e50; color: white; border-color: #2c3e50; }
+        .precio-tag { font-weight: 700; color: #2c3e50; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color:#2c3e50">
+    <a class="navbar-brand fw-bold fs-4" href="/">Event<span>App</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/eventos/buscar">Explorar</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/usuario/reservas" class="btn btn-outline-light btn-sm">🎟️ Mis reservas</a>
+            <a href="/logout" class="btn btn-danger btn-sm">Salir</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-5">
+
+    <div class="row justify-content-center mb-4">
+        <div class="col-lg-6">
+            <form action="/eventos/buscar" method="get" class="d-flex gap-2">
+                <input type="text" name="nombre" class="form-control form-control-lg"
+                       placeholder="Buscar por nombre..."
+                       th:value="${busqueda}">
+                <button type="submit" class="btn btn-lg px-4 fw-bold"
+                        style="background:#e94560; color:white; border:none">Buscar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap justify-content-center mb-5">
+        <a href="/eventos/buscar"
+           class="btn btn-sm btn-outline-secondary btn-categoria"
+           th:classappend="${categoriaSeleccionada == null and busqueda == null} ? 'activo' : ''">
+            Todos
+        </a>
+        <a th:each="cat : ${categorias}"
+           th:href="@{/eventos/buscar(categoria=${cat})}"
+           th:text="${cat}"
+           class="btn btn-sm btn-outline-secondary btn-categoria"
+           th:classappend="${categoriaSeleccionada == cat} ? 'activo' : ''">
+        </a>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1" style="color:#2c3e50" th:if="${busqueda != null}">
+                Resultados para "<span th:text="${busqueda}"></span>"
+            </h4>
+            <h4 class="fw-bold mb-1" style="color:#2c3e50" th:if="${categoriaSeleccionada != null}"
+                th:text="${categoriaSeleccionada}"></h4>
+            <h4 class="fw-bold mb-1" style="color:#2c3e50"
+                th:if="${busqueda == null and categoriaSeleccionada == null}">Todos los eventos</h4>
+            <p class="text-muted mb-0"
+               th:text="${#lists.size(eventos)} + ' eventos encontrados'"></p>
+        </div>
+        <a href="/" class="btn btn-outline-secondary btn-sm">← Volver al inicio</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(eventos)}" class="text-center py-5 text-muted">
+        <div style="font-size:3.5rem">🔍</div>
+        <h5 class="mt-3">No se encontraron eventos</h5>
+        <a href="/eventos/buscar" class="btn btn-outline-secondary mt-2">Ver todos</a>
+    </div>
+
+    <div class="row g-4" th:unless="${#lists.isEmpty(eventos)}">
+        <div class="col-md-6 col-lg-4" th:each="evento : ${eventos}">
+            <div class="card evento-card shadow-sm h-100">
+                <div th:if="${evento.imagen != null and !evento.imagen.isEmpty()}">
+                    <img th:src="${evento.imagen}" class="card-img-top evento-img rounded-top"
+                         th:alt="${evento.nombre}">
+                </div>
+                <div th:unless="${evento.imagen != null and !evento.imagen.isEmpty()}"
+                     class="evento-img-placeholder rounded-top">
+                    <span th:switch="${evento.categoria.name()}">
+                        <span th:case="'CONCIERTO'">🎵</span>
+                        <span th:case="'DEPORTE'">⚽</span>
+                        <span th:case="'TEATRO'">🎭</span>
+                        <span th:case="'FESTIVAL'">🎪</span>
+                        <span th:case="'CONFERENCIA'">🎤</span>
+                        <span th:case="'EXPOSICION'">🖼️</span>
+                        <span th:case="*">🎟️</span>
+                    </span>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <span class="badge mb-2" style="background:#2c3e50; width:fit-content"
+                          th:text="${evento.categoria}"></span>
+                    <h6 class="fw-bold" th:text="${evento.nombre}"></h6>
+                    <p class="text-muted small mb-1">
+                        📅 <span th:text="${#temporals.format(evento.fecha, 'dd MMM yyyy · HH:mm')}"></span>
+                    </p>
+                    <p class="text-muted small mb-3">
+                        📍 <span th:text="${evento.lugar}"></span>
+                    </p>
+                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                        <span class="precio-tag" th:text="${evento.precio} + ' €'"></span>
+                        <div class="d-flex gap-2">
+                            <a th:href="@{/eventos/{id}(id=${evento.id})}"
+                               class="btn btn-sm btn-outline-secondary">Ver</a>
+                            <a th:href="@{/reservar/{id}(id=${evento.id})}"
+                               class="btn btn-sm fw-bold"
+                               th:classappend="${evento.tieneEntradas} ? '' : 'disabled'"
+                               style="background:#e94560; color:white; border:none"
+                               th:text="${evento.tieneEntradas} ? 'Reservar' : 'Agotado'">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="app-data" th:data-username="${username}" style="display:none"></div>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="/js/notificaciones.js"></script>
+<script>
+    const username = document.getElementById('app-data').dataset.username;
+    if (username) conectarNotificaciones(username);
+</script>
+</body>
+</html>

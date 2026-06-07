@@ -68,15 +68,15 @@ def exception_archivo():
         with open("archivo_que_no_existe.txt", "r") as f:
             contenido = f.read()
         return jsonify({"mensaje": contenido})
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         return jsonify({
             "error": "FileNotFoundError",
-            "detalle": str(e)
+            "detalle": "No se pudo abrir el archivo solicitado"
         }), 500
-    except PermissionError as e:
+    except PermissionError:
         return jsonify({
             "error": "PermissionError",
-            "detalle": str(e)
+            "detalle": "No hay permisos para acceder al archivo"
         }), 500
 
 
@@ -89,15 +89,15 @@ def exception_bbdd():
         cursor.execute("SELECT * FROM tabla_inexistente")
         rows = cursor.fetchall()
         return jsonify({"datos": rows})
-    except sqlite3.OperationalError as e:
+    except sqlite3.OperationalError:
         return jsonify({
             "error": "OperationalError",
-            "detalle": str(e)
+            "detalle": "Error operando con la base de datos"
         }), 500
-    except Exception as e:
+    except Exception:
         return jsonify({
             "error": "ErrorBBDD",
-            "detalle": str(e)
+            "detalle": "Error interno de base de datos"
         }), 500
 
 
@@ -109,10 +109,10 @@ def exception_pokemon():
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         return jsonify(response.json())
-    except requests.exceptions.HTTPError as e:
+    except requests.exceptions.HTTPError:
         return jsonify({
             "error": "requests.exceptions.HTTPError",
-            "detalle": f"La PokeAPI devolvió un error: {str(e)}"
+            "detalle": "La PokeAPI devolvió un error"
         }), 500
     except requests.exceptions.ConnectionError as e:
         return jsonify({
