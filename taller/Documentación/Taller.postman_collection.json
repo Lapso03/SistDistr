@@ -1,0 +1,314 @@
+{
+  "info": {
+    "_postman_id": "cece5149-a4e8-46aa-bb19-a1f3f7be24c8",
+    "name": "Taller",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53765328",
+    "_collection_link": "https://go.postman.co/collection/53765328-cece5149-a4e8-46aa-bb19-a1f3f7be24c8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "LoginAdmin",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "admin",
+              "type": "text",
+              "uuid": "7cdb7b39-75c2-4cc9-88e9-fcaf77007352"
+            },
+            {
+              "key": "password",
+              "value": "admin123",
+              "type": "text",
+              "uuid": "42fdac9e-2a85-4559-969f-d63a20dd02fa"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LoginUserNoExistente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "maria",
+              "type": "text",
+              "uuid": "34e480c0-95e2-445c-a669-5d6829e9c653"
+            },
+            {
+              "key": "password",
+              "value": "maria123",
+              "type": "text",
+              "uuid": "ca4cdb05-8e72-44e3-a823-1914123613aa"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "LoginUserExistente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "juan",
+              "type": "text",
+              "uuid": "376961e2-efc0-4829-aade-a3ec404e4ddd"
+            },
+            {
+              "key": "password",
+              "value": "juan123",
+              "type": "text",
+              "uuid": "c22363db-0aac-4600-ad0e-79a6f6ae7ed8"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Logout",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": []
+        },
+        "url": {
+          "raw": "http://localhost:8085/login?logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "login"
+          ],
+          "query": [
+            {
+              "key": "logout",
+              "value": null
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RegistroUserNoExistente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "paula",
+              "type": "text",
+              "uuid": "376961e2-efc0-4829-aade-a3ec404e4ddd"
+            },
+            {
+              "key": "password",
+              "value": "paula123",
+              "type": "text",
+              "uuid": "c22363db-0aac-4600-ad0e-79a6f6ae7ed8"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "RegistroUserExistente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "username",
+              "value": "juan",
+              "type": "text",
+              "uuid": "376961e2-efc0-4829-aade-a3ec404e4ddd"
+            },
+            {
+              "key": "password",
+              "value": "juan124",
+              "type": "text",
+              "uuid": "c22363db-0aac-4600-ad0e-79a6f6ae7ed8"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FAQPreguntarSobreCancelaciones",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "question",
+              "value": "¿Puedo cancelar una reserva?",
+              "type": "text",
+              "uuid": "b1dfb691-e467-46f0-9192-7b7dd37eb6f3"
+            },
+            {
+              "key": "conversationId",
+              "value": "abc123",
+              "type": "text",
+              "uuid": "1637e0b9-d6be-4bc6-b2df-4eed0794d384"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/faq",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "faq"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PreguntaFueraDeAlcance",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "question",
+              "value": "¿Cuánto cuesta un hotel en Madrid?",
+              "type": "text",
+              "uuid": "fec239b4-5ab2-4677-ab20-8f8be7bcd13b"
+            },
+            {
+              "key": "conversationId",
+              "value": "abc123",
+              "type": "text",
+              "uuid": "884e5899-e0e0-4f50-ae8c-638b9045f9b4"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8085/faq",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "faq"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PolíticaDePrivacidad",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8085/politica-privacidad",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8085",
+          "path": [
+            "politica-privacidad"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
